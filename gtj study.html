@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✍️ 영어 글쓰기 피드백 받기</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #4a4a4a;
+            text-align: center;
+        }
+        .teacher-text {
+            background-color: #e6f3ff;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 150px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #feedback {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f8e9;
+            border-left: 5px solid #8bc34a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✍️ 영어 글쓰기 피드백 받기</h1>
+        
+        <div class="teacher-text">
+            <h3>📝 오늘의 글쓰기 주제</h3>
+            <p id="teacherText">
+                지금 이 글을 읽고 있는 당신에게 격려의 메시지를 영어로 작성해보세요.
+            </p>
+        </div>
+        
+        <form id="writingForm">
+            <label for="studentId">🔢 학번:</label>
+            <input type="text" id="studentId" name="studentId" required>
+            
+            <label for="studentName">👤 이름:</label>
+            <input type="text" id="studentName" name="studentName" required>
+            
+            <label for="essay">📝 영어 글쓰기:</label>
+            <textarea id="essay" name="essay" required></textarea>
+            
+            <button type="submit">🚀 전송하고 피드백 받기</button>
+        </form>
+        
+        <div id="feedback">
+            <h3>🤖 GPT 피드백</h3>
+            <p>
+                <!-- 여기에 GPT의 피드백이 표시됩니다 -->
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('writingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const studentId = document.getElementById('studentId').value;
+            const studentName = document.getElementById('studentName').value;
+            const essay = document.getElementById('essay').value;
+            
+            const webhookUrl = 'https://hook.us2.make.com/96py8yljf3big2d6bevuiit859bq8v05';
+            
+            document.getElementById('feedback').innerHTML = `
+                <h3>🤖 GPT 피드백</h3>
+                <p>피드백을 생성 중입니다... 잠시만 기다려주세요!</p>
+            `;
+            
+            console.log('Sending data:', { studentId, studentName, essay });
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    studentId: studentId,
+                    studentName: studentName,
+                    essay: essay
+                })
+            })
+            .then(response => response.text())
+            .then(text => {
+                console.log('Raw response text:', text);
+                let feedbackContent = '';
+                try {
+                    const data = JSON.parse(text);
+                    if (data.feedback) {
+                        // 별점과 피드백 분리
+                        const parts = data.feedback.split('\n');
+                        const rating = parts[0].replace('별점:', '').trim();
+                        const feedback = parts.slice(1).join('\n').replace('피드백:', '').trim();
+                        
+                        feedbackContent = `
+                            <p><strong>별점:</strong> ${rating}</p>
+                            <p><strong>피드백:</strong> ${feedback}</p>
+                        `;
+                    } else {
+                        throw new Error('피드백 형식이 올바르지 않습니다.');
+                    }
+                } catch (error) {
+                    console.error('Parsing error:', error);
+                    // JSON 파싱에 실패한 경우, 텍스트에서 중괄호 제거 후 사용
+                    feedbackContent = text.replace(/[{}]/g, '').replace('"feedback":', '').trim();
+                    // 줄바꿈을 <br> 태그로 변환
+                    feedbackContent = feedbackContent.replace(/\n/g, '<br>');
+                }
+                
+                document.getElementById('feedback').innerHTML = `
+                    <h3>🤖 GPT 피드백</h3>
+                    ${feedbackContent}
+                `;
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById('feedback').innerHTML = `
+                    <h3>🤖 GPT 피드백</h3>
+                    <p>오류가 발생했습니다: ${error.message}</p>
+                `;
+            });
+        });
+    </script>
+</body>
+</html>
