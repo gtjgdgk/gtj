@@ -170,16 +170,16 @@
         <div class="widget-container">
             <div id="word-list">
                 <ul>
-                    <li onclick="updateWidget('Identify')">Identify</li>
-                    <li onclick="updateWidget('Predict')">Predict</li>
-                    <li onclick="updateWidget('Significant')">Significant</li>
-                    <li onclick="updateWidget('Determine')">Determine</li>
-                    <li onclick="updateWidget('Benefit')">Benefit</li>
-                    <li onclick="updateWidget('Relevant')">Relevant</li>
-                    <li onclick="updateWidget('Emphasize')">Emphasize</li>
-                    <li onclick="updateWidget('Evaluate')">Evaluate</li>
-                    <li onclick="updateWidget('Challenge')">Challenge</li>
-                    <li onclick="updateWidget('Support')">Support</li>
+                    <li onclick="toggleWord(this, 'Identify', '식별하다')">Identify</li>
+                    <li onclick="toggleWord(this, 'Predict', '예측하다')">Predict</li>
+                    <li onclick="toggleWord(this, 'Significant', '중요한, 유의미한')">Significant</li>
+                    <li onclick="toggleWord(this, 'Determine', '결정하다')">Determine</li>
+                    <li onclick="toggleWord(this, 'Benefit', '이익, 혜택')">Benefit</li>
+                    <li onclick="toggleWord(this, 'Relevant', '관련 있는')">Relevant</li>
+                    <li onclick="toggleWord(this, 'Emphasize', '강조하다')">Emphasize</li>
+                    <li onclick="toggleWord(this, 'Evaluate', '평가하다')">Evaluate</li>
+                    <li onclick="toggleWord(this, 'Challenge', '도전, 어려움')">Challenge</li>
+                    <li onclick="toggleWord(this, 'Support', '지원하다')">Support</li>
                 </ul>
             </div>
             <div id="youglish-widget">
@@ -244,6 +244,15 @@
             });
             // 초기 단어로 'Identify' 설정
             updateWidget('Identify');
+        }
+
+        function toggleWord(element, english, korean) {
+            if (element.textContent === english) {
+                element.textContent = korean;
+            } else {
+                element.textContent = english;
+            }
+            updateWidget(english);
         }
 
         function updateWidget(word) {
