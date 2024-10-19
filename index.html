@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✍️ 영어 글쓰기 피드백 받기</title>
+    <title>💻English Class(2024)</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,15 +13,17 @@
             background-color: #f0f8ff;
         }
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        h1 {
+        h1, h2, h3 {
             color: #4a4a4a;
+        }
+        h1 {
             text-align: center;
         }
         .teacher-text {
@@ -31,14 +33,11 @@
             margin-bottom: 20px;
         }
         label {
-            display: block;
-            margin-top: 10px;
             font-weight: bold;
         }
         input[type="text"], textarea {
             width: 100%;
             padding: 8px;
-            margin-top: 5px;
             border: 1px solid #ddd;
             border-radius: 4px;
             box-sizing: border-box;
@@ -67,31 +66,133 @@
             background-color: #f1f8e9;
             border-left: 5px solid #8bc34a;
         }
+        .widget-container {
+            display: flex;
+            margin-top: 20px;
+            height: 500px;
+        }
+        #word-list {
+            width: 30%;
+            padding: 20px;
+            background-color: #f0f0f0;
+            overflow-y: auto;
+        }
+        #word-list ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #word-list li {
+            cursor: pointer;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            text-align: center;
+            flex-grow: 1;
+            flex-basis: calc(50% - 5px);
+        }
+        #word-list li:hover {
+            background-color: #e0e0e0;
+        }
+        #youglish-widget {
+            width: 70%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .info-item label {
+            white-space: nowrap;
+            margin-right: 10px;
+        }
+        .essay-section {
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .widget-container {
+                flex-direction: column;
+                height: auto;
+            }
+            #word-list, #youglish-widget {
+                width: 100%;
+            }
+            #word-list li {
+                flex-basis: 100%;
+            }
+            .info-section {
+                flex-direction: column;
+            }
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .info-item label {
+                margin-bottom: 5px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>✍️ 영어 글쓰기 피드백 받기</h1>
+        <h1>💻English Class(2024)</h1>
         
         <div class="teacher-text">
-            <h3>📝 오늘의 글쓰기 주제</h3>
+            <h3>📝 오늘(<span id="currentDate"></span>)의 글</h3>
             <p id="teacherText">
-                지금 이 글을 읽고 있는 당신에게 격려의 메시지를 영어로 작성해보세요.
+                <!-- 여기에 동적으로 로드된 텍스트가 들어갑니다 -->
             </p>
         </div>
-        
-        <form id="writingForm">
-            <label for="studentId">🔢 학번:</label>
-            <input type="text" id="studentId" name="studentId" required>
+    
+        <div class="info-section">
+            <div class="info-item">
+                <label for="studentId">🔢 학번:</label>
+                <input type="text" id="studentId" name="studentId" required>
+            </div>
             
-            <label for="studentName">👤 이름:</label>
-            <input type="text" id="studentName" name="studentName" required>
-            
+            <div class="info-item">
+                <label for="studentName">👤 이름:</label>
+                <input type="text" id="studentName" name="studentName" required>
+            </div>
+        </div>
+
+        <h3>📚 단어 리스트</h3>
+        <div class="widget-container">
+            <div id="word-list">
+                <ul>
+                    <li onclick="updateWidget('Identify')">Identify</li>
+                    <li onclick="updateWidget('Predict')">Predict</li>
+                    <li onclick="updateWidget('Significant')">Significant</li>
+                    <li onclick="updateWidget('Determine')">Determine</li>
+                    <li onclick="updateWidget('Benefit')">Benefit</li>
+                    <li onclick="updateWidget('Relevant')">Relevant</li>
+                    <li onclick="updateWidget('Emphasize')">Emphasize</li>
+                    <li onclick="updateWidget('Evaluate')">Evaluate</li>
+                    <li onclick="updateWidget('Challenge')">Challenge</li>
+                    <li onclick="updateWidget('Support')">Support</li>
+                </ul>
+            </div>
+            <div id="youglish-widget">
+                <div id="widget-1"></div>
+            </div>
+        </div>
+
+        <div class="essay-section">
             <label for="essay">📝 영어 글쓰기:</label>
             <textarea id="essay" name="essay" required></textarea>
             
-            <button type="submit">🚀 전송하고 피드백 받기</button>
-        </form>
+            <button type="submit" id="submitEssay">🚀 전송하고 피드백 받기</button>
+        </div>
         
         <div id="feedback">
             <h3>🤖 GPT 피드백</h3>
@@ -102,7 +203,82 @@
     </div>
 
     <script>
-        document.getElementById('writingForm').addEventListener('submit', function(e) {
+        // 현재 날짜 표시
+        function displayCurrentDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('ko-KR', options);
+        }
+        displayCurrentDate();
+
+        // lecture.txt 파일에서 텍스트 불러오기
+        function loadLectureText() {
+            fetch('lecture.txt')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    console.log('파일을 성공적으로 불러왔습니다.');
+                    document.getElementById('teacherText').textContent = text;
+                })
+                .catch(error => {
+                    console.error('파일을 불러오는데 실패했습니다:', error);
+                    document.getElementById('teacherText').textContent = '수업 준비중입니다.😊';
+                });
+        }
+        loadLectureText();
+
+        var widget;
+        function onYouglishAPIReady() {
+            widget = new YG.Widget("widget-1", {
+                width: 640,
+                components: 9, // search box & caption
+                events: {
+                    'onFetchDone': onFetchDone,
+                    'onVideoChange': onVideoChange,
+                    'onCaptionConsumed': onCaptionConsumed
+                }
+            });
+            // 초기 단어로 'Identify' 설정
+            updateWidget('Identify');
+        }
+
+        function updateWidget(word) {
+            if (widget) {
+                widget.fetch(word, "english");
+            }
+        }
+
+        var views = 0, curTrack = 0, totalTracks = 0;
+
+        function onFetchDone(event) {
+            if (event.totalResult === 0) alert("No result found");
+            else totalTracks = event.totalResult;
+        }
+
+        function onVideoChange(event) {
+            curTrack = event.trackNumber;
+            views = 0;
+        }
+
+        function onCaptionConsumed(event) {
+            if (++views < 3)
+                widget.replay();
+            else
+                if (curTrack < totalTracks)
+                    widget.next();
+        }
+
+        // YouGlish API 스크립트 로드
+        var tag = document.createElement('script');
+        tag.src = "https://youglish.com/public/emb/widget.js";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        document.getElementById('submitEssay').addEventListener('click', function(e) {
             e.preventDefault();
             
             const studentId = document.getElementById('studentId').value;
