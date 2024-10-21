@@ -482,3 +482,39 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(() => console.log("마이크 권한 획득 성공"))
         .catch(error => console.error("마이크 권한 획득 실패:", error));
 });
+
+function sendAudioToMake() {
+    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+    console.log("Make로 오디오 전송 시작");
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'YOUR_ACTUAL_MAKE_WEBHOOK_URL', true);
+    
+    // 명시적으로 헤더 설정
+    xhr.setRequestHeader('Content-Type', 'audio/wav');
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            console.log("Make로부터 응답 받음:", xhr.responseText);
+            try {
+                const data = JSON.parse(xhr.responseText);
+                recognitionResult.textContent = `인식된 텍스트: ${data.transcribedText || '없음'}`;
+                pronunciationFeedback.textContent = `피드백: ${data.gptFeedback || '없음'}`;
+            } catch (error) {
+                console.error('응답 파싱 오류:', error);
+                recordingStatus.textContent = '응답 처리 중 오류가 발생했습니다.';
+            }
+        } else {
+            console.error('Make 시나리오 오류:', xhr.status, xhr.statusText);
+            recordingStatus.textContent = `오류가 발생했습니다. 상태 코드: ${xhr.status}`;
+        }
+    };
+    
+    xhr.onerror = function() {
+        console.error('네트워크 오류 발생');
+        recordingStatus.textContent = '네트워크 오류가 발생했습니다.';
+    };
+    
+    xhr.send(audioBlob);
+}
