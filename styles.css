@@ -1,0 +1,473 @@
+/* 전역 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    font-size: 18px;
+    background-color: #f0f8ff;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 타이포그래피 */
+h1, h2, h3 {
+    color: #4a4a4a;
+}
+
+h1 {
+    text-align: center;
+}
+
+.title-underline {
+    border: 0;
+    height: 2px;
+    background-color: #4a4a4a;
+    margin: 20px 0 30px 0;
+}
+
+/* 정보 섹션 스타일 */
+.info-section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.info-item {
+    flex: 1;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-item label {
+    white-space: nowrap;
+    margin: 0;
+}
+
+.info-item span {
+    font-weight: bold;
+}
+
+/* '불러오기' 버튼 스타일 */
+#fetchStudentInfo {
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    height: 35px;
+    margin: 0;
+    width: auto;
+}
+
+#fetchStudentInfo:hover {
+    background-color: #2980b9;
+}
+
+/* 평가 컨테이너 스타일 */
+.evaluation-container {
+    margin-top: 20px;
+    width: 100%;            
+}
+
+.evaluation-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+#studentEvaluation {
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* 교사 텍스트 섹션 스타일 */
+.teacher-text {
+    background-color: #e6f3ff;
+    padding: 5px 15px 15px 15px;
+    margin-bottom: 10px;
+}
+
+.teacher-text .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teacher-text .header-container h3 {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    flex-grow: 1;
+}
+
+.teacher-text .text-justify {
+    margin-top: 10px;
+}
+
+/* 키워드 입력 스타일 */
+.keyword-input { 
+    display: inline-block; 
+    max-width: none;
+    width: auto;
+    min-width: 80px; 
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid black; 
+    background-color: white;
+    color: black;
+    padding: 0 5px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    white-space: nowrap;
+    overflow: visible;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.correct { 
+    background-color: yellow; 
+    color: black; 
+    font-weight: bold;
+}
+
+.incorrect { 
+    background-color: red; 
+    color: black; 
+}
+
+/* 오디오 버튼 스타일 */
+.audio-button {
+    padding: 8px 15px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    height: 35px;
+    margin: 0;
+    width: auto;
+}
+
+.audio-button:hover {
+    background-color: #2980b9;
+}
+
+/* 액션 영역 스타일 */
+#action-area {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#submit-btn {
+    font-size: 16px;
+    padding: 10px;
+    background-color: #3498DB;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+}
+
+#score-result {
+    font-size: 16px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#score-emoji {
+    font-size: 24px;
+    margin-left: 10px;
+}
+
+#score-display {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 일반 배경 섹션 스타일 */
+.normal-background {
+    background-color: white;
+    padding: 15px 15px 0 15px;
+    margin-bottom: 20px;
+}
+
+.normal-background h3 {
+    margin-top: 0;
+}
+
+/* 단어 리스트 및 위젯 컨테이너 스타일 */
+.widget-container {
+    display: flex;
+    margin-top: 20px;
+    height: 500px;
+    width: 100%;
+}
+
+#word-list {
+    width: 30%;
+    padding: 20px;
+    background-color: #f0f0f0;
+    overflow-y: auto;
+}
+
+#word-list ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#word-list li {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    flex-grow: 1;
+    flex-basis: calc(50% - 5px);
+}
+
+#word-list li:hover {
+    background-color: #e0e0e0;
+}
+
+#youglish-widget {
+    width: 70%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* 에세이 섹션 스타일 */
+.essay-section {
+    margin-top: 20px;
+}
+
+/* 피드백 섹션 스타일 */
+#feedback {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f1f8e9;
+    border-left: 5px solid #8bc34a;
+}
+
+/* 일반 스타일 */
+.justified-text {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 150px;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* 마인드맵 컨테이너 스타일 */
+.mindmap-container {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    max-width: none;
+    width: 100%;
+    margin: 20px 0;
+    background-color: #e6f3ff;
+    box-sizing: border-box;
+}
+
+.mindmap-container h3 {
+    align-self: flex-start;
+    margin-top: 0;
+    width: 100%;
+}
+
+.mindmap-diagram {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.mindmap-input-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.mindmap-input-group {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.mindmap-input-label {
+    margin-right: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.mindmap-input {
+    flex: 1;
+    min-width: 0;
+    margin: 0 5px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.mindmap-update-button {
+    font-size: 16px;
+    padding: 10px;
+    background-color: #3498DB;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+}
+
+.mindmap-feedback {
+    margin-left: 5px;
+    font-size: 1.2em;
+    min-width: 1.5em;
+    display: inline-block;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .widget-container {
+        flex-direction: column;
+        height: auto;
+    }
+    #word-list, #youglish-widget {
+        width: 100%;
+    }
+    #word-list li {
+        flex-basis: 100%;
+    }
+    .info-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .info-item {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    #fetchStudentInfo {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .mindmap-input-container {
+        flex-direction: column;
+    }
+    .mindmap-input-group {
+        width: 100%;
+        margin-right: 0;
+    }
+    .mindmap-update-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+@media (min-width: 769px) {
+    .info-section {
+        justify-content: space-between;
+    }
+    .info-item {
+        flex: 0 1 auto;
+    }
+    #fetchStudentInfo {
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+    input[type="text"], textarea {
+        font-size: 16px;
+    }
+}
+
+#speech-recognition button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#recordingStatus, #recognitionResult, #pronunciationFeedback {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+#recordingStatus {
+    color: #ff0000;
+    font-weight: bold;
+}
