@@ -95,6 +95,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+// 테스트용 간단한 데이터 전송
+fetch('https://hook.us2.make.com/q3o2vg1umjndy5nmvxp5rrlc939oy1p9', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        test: 'Hello Make!'
+    })
+})
+.then(response => console.log('응답:', response))
+.catch(error => console.error('에러:', error));
+
     // 영어 말하기 관련 변수 선언
     let mediaRecorder;
     let audioChunks = [];
