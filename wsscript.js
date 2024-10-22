@@ -195,4 +195,4 @@ document.getElementById('submitEssay').addEventListener('click', function(e) {
         $(".keyword-input").attr("contenteditable", "true");
     });
 
-})(); // 즉시 실행 함수 종료
+(); // 즉시 실행 함수 종료
