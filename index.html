@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💻English Class(2024)</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.13.10/mermaid.min.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>💻English Class(2024)</h1>
+        <hr class="title-underline">
+        
+        <div class="info-section">
+            <div class="info-item">
+                <label for="studentId">🔢 학번:</label>
+                <input type="text" id="studentId" name="studentId" required>
+            </div>
+            
+            <div class="info-item">
+                <label for="studentName">👤 이름:</label>
+                <input type="text" id="studentName" name="studentName" required>
+            </div>
+            
+            <div class="info-item">
+                <button id="fetchStudentInfo">🔍 불러오기</button>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <div class="info-item">
+                <label>📚 단어:</label>
+                <span id="wordScore">-</span>
+            </div>
+            
+            <div class="info-item">
+                <label>🎤 발표:</label>
+                <span id="presentationScore">-</span>
+            </div>
+            
+            <div class="info-item">
+                <label>🏆 태도:</label>
+                <span id="attitudeScore">-</span>
+            </div>
+
+            <div class="info-item">
+                <label>📊 주식:</label>
+                <span id="stockScore">-</span>
+            </div>
+        </div>
+
+        <div class="evaluation-container">
+            <label class="evaluation-label">📝 학생평가</label>
+            <p id="studentEvaluation">-</p>
+        </div>
+    
+    <hr class="title-underline">            
+    <div class="normal-background">
+        
+    <h3>📝 지난 시간 복습</h3>
+    <iframe style="max-width:100%" src="https://wordwall.net/embed/7f2783cfa29c4b2e89a778b866812424?themeId=62&templateId=5&fontStackId=0" width="100%" height="380" frameborder="0" allowfullscreen></iframe> 
+    </div>
+    <hr class="title-underline">
+
+    <div class="teacher-text">
+        <div class="header-container">
+            <h3>📝 오늘(<span id="currentDate">2024. 10. 21.</span>)의 글</h3>
+            <button id="audioControl" class="audio-button">🔊 듣기</button>                
+        </div>
+        
+        <p class="text-justify">
+            &nbsp;&nbsp;The <span class="keyword-input" data-keyword="quest"></span> of science has seen many 
+            <span class="keyword-input" data-keyword="triumphs"></span> and <span class="keyword-input" data-keyword="agonies"></span>. 
+            They usually went hand in hand and ① evidenced equally well the role of 
+            <span class="keyword-input" data-keyword="faith"></span> for science. The first major 
+            <span class="keyword-input" data-keyword="triumph"></span> was Copernicus’ outline of the 
+            <span class="keyword-input" data-keyword="planetary"></span> order. He was far from proving definitely 
+            the heliocentric <span class="keyword-input" data-keyword="proposition"></span>. But he supplemented 
+            ② what he lacked in <span class="keyword-input" data-keyword="physical"></span> proofs with his 
+            <span class="keyword-input" data-keyword="faith"></span> in nature. From his 
+            <span class="keyword-input" data-keyword="belief"></span> ③ that nature was the handiwork of the Creator, 
+            he readily concluded that nature was simple. His system of the planets gave no better 
+            prediction of the motion of planets than did ④ Ptolemy’s; the most attractive proof of Copernicus lay in the 
+            <span class="keyword-input" data-keyword="simplicity"></span> of the new ordering of the planets. 
+            But it was a bold view, and he clung to it though people shook their heads in disbelief. But Galileo, whom people 
+            consider the father of the <span class="keyword-input" data-keyword="experimental"></span> method, 
+            ⑤ to praise Copernicus precisely for what he did: for staying with his belief.
+            </p>
+        <div id="action-area">
+            <button id="submit-btn" onclick="submitAnswers()">🚀 제출하기</button>
+            <div id="score-result" style="display: none;">
+                맞은 점수: <span id="correct-score"></span>
+                <span id="score-emoji"></span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="title-underline">
+    <div class="normal-background">
+        <h3>📝 단어 리스트</h3>
+        <div class="widget-container">
+            <div id="word-list">
+                <ul>
+                    <li onclick="toggleWord(this, 'Quest', '탐구')">Quest</li>
+                    <li onclick="toggleWord(this, 'Triumph', '승리, 업적')">Triumph</li>
+                    <li onclick="toggleWord(this, 'Agony', '고뇌, 고통')">Agony</li>
+                    <li onclick="toggleWord(this, 'Evidenced', '입증하다')">Evidence</li>
+                    <li onclick="toggleWord(this, 'Faith', '믿음, 신념')">Faith</li>
+                    <li onclick="toggleWord(this, 'Outline', '개요')">Outline</li>
+                    <li onclick="toggleWord(this, 'Planetary', '행성의')">Planetary</li>
+                    <li onclick="toggleWord(this, 'Heliocentric', '태양 중심의')">Heliocentric</li>
+                    <li onclick="toggleWord(this, 'Proposition', '명제')">Proposition</li>
+                    <li onclick="toggleWord(this, 'Supplement', '보충하다')">Supplement</li>
+                    <li onclick="toggleWord(this, 'Belief', '신념')">Belief</li>
+                    <li onclick="toggleWord(this, 'Prediction', '예측')">Prediction</li>
+                    <li onclick="toggleWord(this, 'Geometrical', '기하학적')">Geometrical</li>
+                    <li onclick="toggleWord(this, 'Disbelief', '불신')">Disbelief</li>
+                    <li onclick="toggleWord(this, 'Experimental', '실험적')">Experimental</li>
+                </ul>
+            </div>
+            <div id="youglish-widget">
+                <div id="widget-1"></div>
+            </div>
+        </div>
+
+        <hr class="title-underline">
+        <div class="mindmap-container">
+            <h3>🧭 마인드맵</h3>
+            <div id="mindmap-diagram" class="mindmap-diagram"></div>
+            <div class="mindmap-input-container">
+                <div class="mindmap-input-group">
+                    <span class="mindmap-input-label">1:</span>
+                    <input type="text" id="mindmap-keyword1" class="mindmap-input" placeholder="Enter keyword 1">
+                    <span id="mindmap-feedback1" class="mindmap-feedback"></span>
+                </div>
+                <div class="mindmap-input-group">
+                    <span class="mindmap-input-label">2:</span>
+                    <input type="text" id="mindmap-keyword2" class="mindmap-input" placeholder="Enter keyword 2">
+                    <span id="mindmap-feedback2" class="mindmap-feedback"></span>
+                </div>
+                <div class="mindmap-input-group">
+                    <span class="mindmap-input-label">3:</span>
+                    <input type="text" id="mindmap-keyword3" class="mindmap-input" placeholder="Enter keyword 3">
+                    <span id="mindmap-feedback3" class="mindmap-feedback"></span>
+                </div>
+                <button id="mindmap-update-button" class="mindmap-update-button">✏️ 입력하기</button>
+            </div>
+        </div>
+
+        <hr class="title-underline">
+        <div class="essay-section">
+            <label for="essay">📝 영어 글쓰기:</label>
+            <textarea id="essay" name="essay" required></textarea>
+            <button type="submit" id="submitEssay">🚀 전송하고 피드백 받기</button>
+        </div>
+        
+        <div id="feedback">
+            <h3>👨‍🏫 선생님 피드백</h3>
+            <p>
+                <!-- 여기에 GPT의 피드백이 표시됩니다 -->
+            </p>
+        </div>
+
+        <hr class="title-underline">
+        <div id="speech-recognition">
+            <h3>🎤 영어 말하기</h3>
+            <p>아래 버튼을 클릭하고 영어로 말해보세요. 녹음이 완료되면 자동으로 평가됩니다.</p>
+            <button id="startRecordingBtn">녹음 시작</button>
+            <button id="stopRecordingBtn" style="display: none;">녹음 중지</button>
+            <div id="recordingStatus"></div>
+            <div id="recognitionResult"></div>
+            <div id="pronunciationFeedback"></div>
+        </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="upperscript.js"></script>
+    <script src="wsscript.js"></script>
+</body>
+</html>
