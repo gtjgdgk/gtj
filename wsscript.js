@@ -18,26 +18,45 @@ document.getElementById('submitEssay').addEventListener('click', function(e) {
     fetch(webhookUrl, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            studentId: studentId,
-            studentName: studentName,
-            essay: essay
+            studentId,
+            studentName,
+            essay
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        // 응답 텍스트를 먼저 확인
+        return response.text().then(text => {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                console.error('JSON 파싱 오류:', e);
+                // 수동 파싱 시도
+                return manuallyParseJSON(text) || { error: '응답 파싱 실패' };
+            }
+        });
+    })
     .then(data => {
         let feedbackContent = '';
         if (data.feedback) {
-            const parts = data.feedback.split('\n');
-            const rating = parts[0].replace('별점:', '').trim();
-            const feedback = parts.slice(1).join('\n').replace('피드백:', '').trim();
-            
-            feedbackContent = `
-                <p><strong>별점:</strong> ${rating}</p>
-                <p><strong>피드백:</strong> ${feedback}</p>
-            `;
+            try {
+                const parts = data.feedback.split('\n');
+                const rating = parts[0].replace('별점:', '').trim();
+                const feedback = parts.slice(1).join('\n').replace('피드백:', '').trim();
+                
+                feedbackContent = `
+                    <p><strong>별점:</strong> ${rating}</p>
+                    <p><strong>피드백:</strong> ${feedback}</p>
+                `;
+            } catch (e) {
+                console.error('피드백 파싱 오류:', e);
+                feedbackContent = '피드백 형식이 올바르지 않습니다.';
+            }
         } else {
             feedbackContent = '피드백을 받아오는 데 문제가 발생했습니다.';
         }
@@ -64,6 +83,33 @@ document.getElementById('submitEssay').addEventListener('click', function(e) {
     });
 });
 
+// JSON 파싱 유틸리티 함수 개선
+function manuallyParseJSON(str) {
+    try {
+        // 일반적인 줄바꿈 문자 이스케이프
+        str = str.replace(/[\n\r\t]/g, match => {
+            const escapes = {
+                '\n': '\\n',
+                '\r': '\\r',
+                '\t': '\\t'
+            };
+            return escapes[match];
+        });
+        
+        // 따옴표 이스케이프 처리
+        str = str.replace(/(?<!\\)"/g, '\\"');
+        
+        // 전체 문자열을 따옴표로 감싸기
+        if (!str.startsWith('"')) {
+            str = `"${str}"`;
+        }
+        
+        return JSON.parse(str);
+    } catch (e) {
+        console.error('수동 JSON 파싱 실패:', e);
+        return null;
+    }
+}
 // 영어 말하기 관련
 let mediaRecorder;
 let audioChunks = [];
