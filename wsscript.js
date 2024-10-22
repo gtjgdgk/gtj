@@ -172,27 +172,25 @@ document.getElementById('submitEssay').addEventListener('click', function(e) {
 
     // DOM 로드 완료 후 실행
     $(document).ready(function() {
-        // 현재 날짜 표시
-        $("#currentDate").text(new Date().toLocaleDateString());
+    // 현재 날짜 표시
+    $("#currentDate").text(new Date().toLocaleDateString());
 
-        // 키워드 제출 버튼 이벤트
-        $("#submit-btn").click(function() {
-            let score = 0;
-            $(".keyword-input").each(function() {
-                const userInput = $(this).text().trim().toLowerCase();
-                const correctKeyword = $(this).data("keyword").toLowerCase();
-                if (userInput === correctKeyword) {
-                    $(this).addClass("correct").removeClass("incorrect");
-                    score++;
-                } else {
-                    $(this).addClass("incorrect").removeClass("correct");
-                }
-            });
-            $("#score-display").text(`맞은점수: ${score}/10점`);
+    // 키워드 제출 버튼 이벤트
+    $("#submit-btn").click(function() {
+        let score = 0;
+        $(".keyword-input").each(function() {
+            const userInput = $(this).text().trim().toLowerCase();
+            const correctKeyword = $(this).data("keyword").toLowerCase();
+            if (userInput === correctKeyword) {
+                $(this).addClass("correct").removeClass("incorrect");
+                score++;
+            } else {
+                $(this).addClass("incorrect").removeClass("correct");
+            }
         });
-
-        // 키워드 입력 활성화
-        $(".keyword-input").attr("contenteditable", "true");
+        $("#score-display").text(`맞은점수: ${score}/10점`);
     });
 
-(); // 즉시 실행 함수 종료
+    // 키워드 입력 활성화
+    $(".keyword-input").attr("contenteditable", "true");
+}); // jQuery ready 함수 종료
