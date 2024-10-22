@@ -93,106 +93,103 @@ document.getElementById('submitEssay').addEventListener('click', function(e) {
     });
 });
 
+// 영어 말하기 관련
+let mediaRecorder;
+let audioChunks = [];
 
-    // 영어 말하기 관련
-    let mediaRecorder;
-    let audioChunks = [];
+const startRecordingBtn = document.getElementById('startRecordingBtn');
+const stopRecordingBtn = document.getElementById('stopRecordingBtn');
+const recordingStatus = document.getElementById('recordingStatus');
+const recognitionResult = document.getElementById('recognitionResult');
+const pronunciationFeedback = document.getElementById('pronunciationFeedback');
 
-    const startRecordingBtn = document.getElementById('startRecordingBtn');
-    const stopRecordingBtn = document.getElementById('stopRecordingBtn');
-    const recordingStatus = document.getElementById('recordingStatus');
-    const recognitionResult = document.getElementById('recognitionResult');
-    const pronunciationFeedback = document.getElementById('pronunciationFeedback');
+if (startRecordingBtn && stopRecordingBtn) {
+    startRecordingBtn.onclick = startRecording;
+    stopRecordingBtn.onclick = stopRecording;
+}
 
-    if (startRecordingBtn && stopRecordingBtn) {
-        startRecordingBtn.onclick = startRecording;
-        stopRecordingBtn.onclick = stopRecording;
-    }
+function startRecording() {
+    audioChunks = [];
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
 
-    function startRecording() {
-        audioChunks = [];
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(stream => {
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.start();
+            startRecordingBtn.style.display = 'none';
+            stopRecordingBtn.style.display = 'inline-block';
+            recordingStatus.textContent = '녹음 중...';
 
-                startRecordingBtn.style.display = 'none';
-                stopRecordingBtn.style.display = 'inline-block';
-                recordingStatus.textContent = '녹음 중...';
-
-                mediaRecorder.addEventListener("dataavailable", event => {
-                    audioChunks.push(event.data);
-                });
-
-                mediaRecorder.addEventListener("stop", () => {
-                    sendAudioToMake();
-                });
-            })
-            .catch(error => {
-                console.error("마이크 액세스 오류:", error);
-                recordingStatus.textContent = '마이크 액세스 오류. 권한을 확인해주세요.';
-        });
-    }
-
-    function stopRecording() {
-        if (mediaRecorder && mediaRecorder.state !== "inactive") {
-            mediaRecorder.stop();
-            startRecordingBtn.style.display = 'inline-block';
-            stopRecordingBtn.style.display = 'none';
-            recordingStatus.textContent = '녹음 완료. 평가 중...';
-        }
-    }
-
-    function sendAudioToMake() {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://hook.us2.make.com/dtfj0rh6dwdkcluc1pobt1xoorw24fx4', true);
-        xhr.setRequestHeader('Content-Type', 'audio/wav');
-        
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                try {
-                    const data = JSON.parse(xhr.responseText);
-                    recognitionResult.textContent = `인식된 텍스트: ${data.transcribedText || '없음'}`;
-                    pronunciationFeedback.textContent = `피드백: ${data.gptFeedback || '없음'}`;
-                } catch (error) {
-                    recordingStatus.textContent = '응답 처리 중 오류가 발생했습니다.';
-                }
-            } else {
-                recordingStatus.textContent = `오류가 발생했습니다. 상태 코드: ${xhr.status}`;
-            }
-        };
-        
-        xhr.onerror = function() {
-            recordingStatus.textContent = '네트워크 오류가 발생했습니다.';
-        };
-        
-        xhr.send(audioBlob);
-    }
-
-    // DOM 로드 완료 후 실행
-    $(document).ready(function() {
-        // 현재 날짜 표시
-        $("#currentDate").text(new Date().toLocaleDateString());
-
-        // 키워드 제출 버튼 이벤트
-        $("#submit-btn").click(function() {
-            let score = 0;
-            $(".keyword-input").each(function() {
-                const userInput = $(this).text().trim().toLowerCase();
-                const correctKeyword = $(this).data("keyword").toLowerCase();
-                if (userInput === correctKeyword) {
-                    $(this).addClass("correct").removeClass("incorrect");
-                    score++;
-                } else {
-                    $(this).addClass("incorrect").removeClass("correct");
-                }
+            mediaRecorder.addEventListener("dataavailable", event => {
+                audioChunks.push(event.data);
             });
-            $("#score-display").text(`맞은점수: ${score}/10점`);
-        });
 
-        // 키워드 입력 활성화
-        $(".keyword-input").attr("contenteditable", "true");
+            mediaRecorder.addEventListener("stop", () => {
+                sendAudioToMake();
+            });
+        })
+        .catch(error => {
+            console.error("마이크 액세스 오류:", error);
+            recordingStatus.textContent = '마이크 액세스 오류. 권한을 확인해주세요.';
+        });
+}
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+        startRecordingBtn.style.display = 'inline-block';
+        stopRecordingBtn.style.display = 'none';
+        recordingStatus.textContent = '녹음 완료. 평가 중...';
+    }
+}
+
+function sendAudioToMake() {
+    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://hook.us2.make.com/dtfj0rh6dwdkcluc1pobt1xoorw24fx4', true);
+    xhr.setRequestHeader('Content-Type', 'audio/wav');
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            try {
+                const data = JSON.parse(xhr.responseText);
+                recognitionResult.textContent = `인식된 텍스트: ${data.transcribedText || '없음'}`;
+                pronunciationFeedback.textContent = `피드백: ${data.gptFeedback || '없음'}`;
+            } catch (error) {
+                recordingStatus.textContent = '응답 처리 중 오류가 발생했습니다.';
+            }
+        } else {
+            recordingStatus.textContent = `오류가 발생했습니다. 상태 코드: ${xhr.status}`;
+        }
+    };
+    
+    xhr.onerror = function() {
+        recordingStatus.textContent = '네트워크 오류가 발생했습니다.';
+    };
+    
+    xhr.send(audioBlob);
+}
+
+// DOM 로드 완료 후 실행
+$(document).ready(function() {
+    // 현재 날짜 표시
+    $("#currentDate").text(new Date().toLocaleDateString());
+
+    // 키워드 제출 버튼 이벤트
+    $("#submit-btn").click(function() {
+        let score = 0;
+        $(".keyword-input").each(function() {
+            const userInput = $(this).text().trim().toLowerCase();
+            const correctKeyword = $(this).data("keyword").toLowerCase();
+            if (userInput === correctKeyword) {
+                $(this).addClass("correct").removeClass("incorrect");
+                score++;
+            } else {
+                $(this).addClass("incorrect").removeClass("correct");
+            }
+        });
+        $("#score-display").text(`맞은점수: ${score}/10점`);
     });
 
-})(); // 즉시 실행 함수 종료
+    // 키워드 입력 활성화
+    $(".keyword-input").attr("contenteditable", "true");
+});
